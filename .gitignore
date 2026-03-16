@@ -1,0 +1,4 @@
+# Ignore generated/credential files that may live alongside skills
+*.json
+*.env
+secrets/
