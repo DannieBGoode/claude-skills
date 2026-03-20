@@ -207,16 +207,30 @@ If `audit_failed = true` (from Step 2.5): use the full unfiltered CI text from S
 
 Otherwise, construct the comment as follows. For all sections, items that appear in `implemented[]` are **silently omitted**. Items in `unchecked[]` are included with the note `(could not verify — check manually)`.
 
-1. **Technical SEO Gaps** — include items from `missing[]` and `unchecked[]` where `source == "checklist"`:
-   - `❌ [name] — not found` for each `missing[]` checklist item
-   - `⚠️ [name] (could not verify — check manually)` for each `unchecked[]` checklist item
+1. **Technical SEO Gaps** — include items from `missing[]` and `unchecked[]` where `source == "checklist"`. Each item **must** include a concrete implementation hint on the line below it in this format:
+   - `❌ [name] — not found` for each `missing[]` checklist item, followed by `  → **Fix:** [target file(s) to edit] — [exact JSON-LD @type or HTML tag/attribute to add]`
+   - `⚠️ [name] (could not verify — check manually)` for each `unchecked[]` checklist item, also with a `→ **Fix:**` line where applicable
    - Omit all `implemented[]` checklist items silently
+   - **Do NOT write vague hints like "add schema" — always name the specific file and the specific `@type` value or attribute**
+   - Example of a good item:
+     ```
+     ❌ HowTo JSON-LD — not found
+       → **Fix:** Create `_includes/schema_howto.html` with `"@type": "HowTo"` JSON-LD; include it from `_layouts/post.html` when front matter contains `howto:` key
+     ```
 
-2. **Trending Topics & Content Gaps** — from Step 2 web search results, include items from `missing[]` or `unchecked[]` where `source == "ci"`. For `unchecked[]` items, append `(could not verify — check manually)`. Omit items in `implemented[]`.
+2. **Trending Topics & Content Gaps** — from Step 2 web search results, include items from `missing[]` or `unchecked[]` where `source == "ci"`. For `unchecked[]` items, append `(could not verify — check manually)`. Omit items in `implemented[]`. For each missing content item, include:
+   - The target keyword phrase (exact string an agent should optimise for)
+   - Monthly search volume if available
+   - A one-line content angle (e.g. "cover the AEAT Feb 2026 ruling and its implications for retail stakers")
+   - Suggested Jekyll filename in the format `_posts/YYYY-MM-DD-slug.md`
 
 3. **Competitor Keyword Gaps**, **Long-Tail Opportunities**, **Algorithm Update Notes** — synthesise from Step 2 web search results. For any specific recommendations in these sections that appear in `implemented[]`, omit them. For `unchecked[]` items, append `(could not verify — check manually)`.
 
-4. **Top Priorities** — list only actionable pending items from `missing[]` and `unchecked[]`, prioritised by impact. For `unchecked[]` items, append `(could not verify — check manually)`.
+4. **Top Priorities** — list only actionable pending items from `missing[]` and `unchecked[]`, prioritised by impact. For `unchecked[]` items, append `(could not verify — check manually)`. Format each item as:
+   `N. **[Action]** — [one-line rationale with data] · Effort: [Low/Medium/High]`
+   - Low = single file edit, under 30 min
+   - Medium = new file or multi-file edit, 1–3 hours
+   - High = new content post requiring research and writing
 
 The comment should follow this structure:
 
